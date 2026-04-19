@@ -1,0 +1,48 @@
+seed: 42
+
+paths:
+  static_csv: data/raw/case_static.csv
+  yearly_csv: data/raw/case_year.csv
+  processed_csv: data/processed/model_table.csv
+  embedding_csv: outputs/embeddings/case_embedding.csv
+  cluster_csv: outputs/clusters/case_cluster.csv
+  model_path: outputs/models/xgb_regressor.json
+  metrics_json: outputs/models/metrics.json
+  shap_csv: outputs/explain/shap_importance.csv
+  figures_dir: outputs/figures
+
+keys:
+  case_id: case_id
+  year: year
+
+target:
+  name: VolShrinkRatio
+  forecast_year: 10
+
+features:
+  rolling_windows: [2, 3]
+  include_interactions:
+    - [DHR, LP]
+    - [TR, Ey]
+    - [SH_JH_ratio, PressureSpan]
+
+clustering:
+  n_clusters: 4
+  embedding_method: pca
+  pca_components: 8
+
+model:
+  test_size: 0.2
+  random_state: 42
+  params:
+    n_estimators: 500
+    learning_rate: 0.03
+    max_depth: 5
+    subsample: 0.85
+    colsample_bytree: 0.85
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+
+plot:
+  dpi: 300
+  style: paper
